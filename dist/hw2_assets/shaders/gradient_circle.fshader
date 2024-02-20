@@ -2,6 +2,8 @@ precision mediump float;
 
 varying vec4 v_Position;
 
+uniform vec4 u_Color;
+
 // HOMEWORK 2 - TODO
 /*
 	The fragment shader is where pixel colors are decided.
@@ -23,5 +25,6 @@ void main(){
 	}
 
 	// Use the alpha value in our color
-	gl_FragColor = vec4(1.0, 0.0, 0.0, alpha);
+	gl_FragColor = u_Color;
+	gl_FragColor.a = alpha;
 }
