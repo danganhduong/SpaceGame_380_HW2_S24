@@ -22,6 +22,17 @@ import SpaceshipPlayerController from "../AI/SpaceshipPlayerController";
 import Circle from "../../Wolfie2D/DataTypes/Shapes/Circle";
 import GameOver from "./GameOver";
 
+// Collision Helper Function
+function clamp(value: number, min: number, max: number): number {
+  if (value < min) {
+    return min;
+  } else if (value > max) {
+    return max;
+  } else {
+    return value;
+  }
+}
+
 /**
  * In Wolfie2D, custom scenes extend the original scene class.
  * This gives us access to lifecycle methods to control our game.
@@ -681,6 +692,14 @@ export default class Homework1_Scene extends Scene {
     paddedViewportSize: Vec2
   ): void {
     // Your code goes here:
+    if (node.positionX > Math.abs(paddedViewportSize.x)) {
+      node.positionX = -paddedViewportSize.x;
+      return;
+    }
+    if (node.positionY > Math.abs(paddedViewportSize.y)) {
+      node.positionY = paddedViewportSize.y;
+      return;
+    }
   }
 
   // HOMEWORK 2 - TODO
@@ -710,6 +729,50 @@ export default class Homework1_Scene extends Scene {
    */
   static checkAABBtoCircleCollision(aabb: AABB, circle: Circle): boolean {
     // Your code goes here:
-    return false;
+    // let circle_center = new Vec2(
+    //   aabb.x - circle.center.x,
+    //   aabb.y - circle.center.y
+    // );
+    // let aabb_bounds = new Vec2(
+    //   aabb.halfSize.x - aabb.x,
+    //   aabb.halfSize.y - aabb.y
+    // );
+
+    // get difference vector between both centers
+    // let center_diff = Math.sqrt(
+    //   Math.pow(aabb.x - circle.center.x, 2) +
+    //     Math.pow(aabb.y - circle.center.y, 2)
+    // );
+
+    // let clamp_point = new Vec2(
+    //   clamp(circle_center.x, -aabb_bounds.x, aabb_bounds.x),
+    //   clamp(circle_center.y, -aabb_bounds.y, aabb_bounds.y)
+    // );
+
+    // let clamp_dist = Math.sqrt(
+    //   Math.pow(clamp_point.x - circle.center.x, 2) +
+    //     Math.pow(clamp_point.y - circle.center.y, 2)
+    // );
+
+    // if (clamp_dist < circle.x + circle.radius) {
+    //   return true;
+    // }
+    // if (clamp_dist < circle.y + circle.radius) {
+    //   return true;
+    // }
+    // return false;
+    const dx = aabb.center.x - circle.center.x;
+    const px = aabb.halfSize.x + circle.center.x - Math.abs(dx);
+
+    if (px <= 0) {
+      return null;
+    }
+
+    const dy = aabb.y - circle.y;
+    const py = aabb.center.y + circle.center.y - Math.abs(dy);
+    if (py <= 0) {
+      return null;
+    }
+    return true;
   }
 }
