@@ -58,6 +58,16 @@ export default class GradientCircleShaderType extends RectShaderType {
 
     /* ##### UNIFORMS ##### */
 
+    // Pass data from WebGL application to shader
+    const u_Color = gl.getUniformLocation(program, "u_Color");
+    gl.uniform4f(
+      u_Color,
+      options.color.r,
+      options.color.g,
+      options.color.b,
+      options.color.a
+    );
+
     // Get transformation matrix
     // We have a square for our rendering space, so get the maximum dimension of our quad
     let maxDimension = Math.max(options.size.x, options.size.y);
@@ -92,16 +102,6 @@ export default class GradientCircleShaderType extends RectShaderType {
 
     // Draw the quad
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-
-    // Pass data from WebGL application to shader
-    const u_Color = gl.getUniformLocation(program, "u_Color");
-    gl.uniform4f(
-      u_Color,
-      options.color.r,
-      options.color.g,
-      options.color.b,
-      options.color.a
-    );
   }
 
   // HOMEWORK 2 - TODO
